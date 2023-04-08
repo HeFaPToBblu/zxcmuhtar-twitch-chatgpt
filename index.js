@@ -13,12 +13,6 @@ app.all('/', (req, res) => {
     res.send('Yo!')
 })
 
-let file_context = ""
-fs.readFile("./file_context.txt", 'utf8', function(err, data) {
-  if (err) throw err;
-  console.log(file_context);
-  file_context = data;
-});
 
 app.get('/gpt/:text', async (req, res) => {
     const text = req.params.text
@@ -30,7 +24,7 @@ app.get('/gpt/:text', async (req, res) => {
     });
     const openai = new OpenAIApi(configuration);
 
-    const prompt ="\n\nQ:" + text + "\nA:";
+    const prompt ="\nQ:" + text + "\nA:";
     console.log(prompt);
     
     const response = await openai.createChatCompletion({

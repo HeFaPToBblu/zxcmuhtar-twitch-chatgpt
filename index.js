@@ -13,7 +13,6 @@ app.all('/', (req, res) => {
     res.send('Yo!')
 })
 
-
 app.get('/gpt/:text', async (req, res) => {
     const text = req.params.text
     const { Configuration, OpenAIApi } = require("openai");
@@ -24,7 +23,8 @@ app.get('/gpt/:text', async (req, res) => {
     });
     const openai = new OpenAIApi(configuration);
 
-    
+    const prompt ="\nQ:" + text + "\nA:";
+    console.log(prompt);
     
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
@@ -37,4 +37,4 @@ app.get('/gpt/:text', async (req, res) => {
     }
 })
 
-app.listen(process.env.PORT || 6667) 
+app.listen(process.env.PORT || 3000) 

@@ -24,8 +24,7 @@ app.get('/gpt/:text', async (req, res) => {
     });
     const openai = new OpenAIApi(configuration);
 
-    const prompt ="\nQ:" + text + "\nA:";
-    console.log(prompt);
+    
     
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",

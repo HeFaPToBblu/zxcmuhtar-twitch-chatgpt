@@ -36,7 +36,7 @@ frequency_penalty: 0,
 presence_penalty: 0,
 });
 if (response.data.choices) {
-res.send(response.data.choices[0].message.content)
+res.send(response.data.choices[0].text.content)
 } else {
 res.send("Something went wrong. Try again later!")
 }

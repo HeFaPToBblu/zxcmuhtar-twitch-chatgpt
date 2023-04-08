@@ -7,46 +7,39 @@ const readFile = promisify(fs.readFile)
 
 app.use(express.json({extended: true, limit: '1mb'}))
 
-
 app.all('/', (req, res) => {
-    console.log("Just got a request!")
-    res.send('Yo!')
+console.log("Just got a request!")
+res.send('Yo!')
 })
 
-let file_context = ""
-fs.readFile("./file_context.txt", 'utf8', function(err, data) {
-  if (err) throw err;
-  console.log(file_context);
-  file_context = data;
-});
-
 app.get('/gpt/:text', async (req, res) => {
-    const text = req.params.text
-    const { Configuration, OpenAIApi } = require("openai");
+const text = req.params.text
+const { Configuration, OpenAIApi } = require("openai");
 
-    console.log(process.env.OPENAI_API_KEY)
-    const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
-    const openai = new OpenAIApi(configuration);
+console.log(process.env.OPENAI_API_KEY)
+const configuration = new Configuration({
+apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
-    const prompt = file_context + "\n\nQ:" + text + "\nA:";
-    console.log(prompt);
-    
-    const response = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: prompt,
-      temperature: 0.5,
-      max_tokens: 300,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-    });
-    if (response.data.choices) {
-        res.send(response.data.choices[0].text)
-    } else {
-        res.send("Something went wrong. Try again later!")
-    }
+const prompt ="\nQ:" + text + "\nA:";
+console.log(prompt);
+
+const response = await openai.createChatCompletion({
+model: "gpt-3.5-turbo",
+messages: [{role: "system", content: "You are a chatbot on the twitch platform, so you should follow the twitch rules.You should have short answers in Russian.Be polite and funny to everyone."},
+{ role: "user", content: prompt}],
+temperature: 0.5,
+max_tokens: 300,
+top_p: 1,
+frequency_penalty: 0,
+presence_penalty: 0,
+});
+if (response.data.choices) {
+res.send(response.data.choices[0].message.content)
+} else {
+res.send("Something went wrong. Try again later!")
+}
 })
 
 app.listen(process.env.PORT || 3000)

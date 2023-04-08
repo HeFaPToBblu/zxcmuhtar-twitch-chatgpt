@@ -1,4 +1,4 @@
-const express = require('express')
+onst express = require('express')
 const request = require('request')
 const app = express()
 const fs = require('fs');
@@ -33,14 +33,20 @@ app.get('/gpt/:text', async (req, res) => {
     const prompt = file_context + "\n\nQ:" + text + "\nA:";
     console.log(prompt);
     
-    const response = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    prompt: prompt,
-    temperature: 0.5,
-    max_tokens: 300,
-    top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-});
+    const response = await openai.createCompletion({
+      model: "gpt-3.5-turbo",
+      prompt: prompt,
+      temperature: 0.5,
+      max_tokens: 300,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+    });
+    if (response.data.choices) {
+        res.send(response.data.choices[0].text)
+    } else {
+        res.send("Something went wrong. Try again later!")
+    }
+})
 
 app.listen(process.env.PORT || 3000)

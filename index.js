@@ -27,7 +27,7 @@ console.log(prompt);
 
 const response = await openai.createChatCompletion({
 model: "gpt-3.5-turbo",
-messages: [{role: "system", content: "You are a chatbot on the twitch platform, so you should follow the twitch rules.You must answer quickly and briefly in Russian.Be polite and funny to everyone."},
+messages: [{role: "system", content: "You are a chatbot on the twitch platform, so you should follow the twitch rules.You must answer quickly and briefly in Russian.Be polite and funny to everyone.You have to talk like a human, like you have an opinion."},
 { role: "user", content: prompt}],
 temperature: 0.5,
 max_tokens: 300,

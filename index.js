@@ -35,7 +35,7 @@ app.get('/gpt/:text', async (req, res) => {
     
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      messages: [{ role: "user"}],
+      messages: [{ role: "user", content: text}],
     });
     if (response.data.choices) {
         res.send(response.data.choices[0].message.content)

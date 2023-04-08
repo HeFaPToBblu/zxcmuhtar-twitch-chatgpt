@@ -33,16 +33,12 @@ app.get('/gpt/:text', async (req, res) => {
     const prompt = file_context + "\n\nQ:" + text + "\nA:";
     console.log(prompt);
     
-    const response = await openai.createCompletion({
-      model: "gpt-3.5-turbo",
-      prompt: prompt,
-      temperature: 0.5,
-      max_tokens: 300,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      apiVersion: "v1",
-    });
+    const response = await openai.ChatCompletion.create(
+     model="gpt-3.5-turbo",
+        messages=[
+        {"role": "system", "content": "You are a chat bot on twitch speaking russian."},
+    ]
+);
     if (response.data.choices) {
         res.send(response.data.choices[0].text)
     } else {

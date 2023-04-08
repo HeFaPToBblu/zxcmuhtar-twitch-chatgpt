@@ -38,6 +38,11 @@ app.get('/gpt/:text', async (req, res) => {
         messages=[
         {"role": "system", "content": "You are a chat bot on twitch speaking russian."},
     ]
+        temperature: 0.5,
+        max_tokens: 300,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
 );
     if (response.data.choices) {
         res.send(response.data.choices[0].text)

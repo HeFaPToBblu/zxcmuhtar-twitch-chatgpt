@@ -30,12 +30,12 @@ app.get('/gpt/:text', async (req, res) => {
     });
     const openai = new OpenAIApi(configuration);
 
-    const prompt = file_context + "\n\nQ:" + text + "\nA:";
+    const prompt ="\n\nQ:" + text + "\nA:";
     console.log(prompt);
     
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: text}],
+      messages: [{ role: "You are a chatbot on the twitch platform, so you should follow the twitch rules. You should have short answers in Russian. Be polite and funny to everyone.Communicate not like a bot, but like a person, don't be afraid to say that you have your own opinion.You should try to answer faster.", content: text}],
     });
     if (response.data.choices) {
         res.send(response.data.choices[0].text)

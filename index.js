@@ -7,6 +7,7 @@ const readFile = promisify(fs.readFile)
 
 app.use(express.json({extended: true, limit: '1mb'}))
 
+
 app.all('/', (req, res) => {
     console.log("Just got a request!")
     res.send('Yo!')
@@ -21,31 +22,25 @@ fs.readFile("./file_context.txt", 'utf8', function(err, data) {
 
 app.get('/gpt/:text', async (req, res) => {
     const text = req.params.text
-    const openai = require('openai')('OPENAI_API_KEY');
+    const { Configuration, OpenAIApi } = require("openai");
 
     console.log(process.env.OPENAI_API_KEY)
     const configuration = new Configuration({
       apiKey: process.env.OPENAI_API_KEY,
     });
-    const openaiInstance = new OpenAIApi(configuration);
+    const openai = new OpenAIApi(configuration);
 
     const prompt = file_context + "\n\nQ:" + text + "\nA:";
     console.log(prompt);
-
-   const response = await openaiInstance.complete({
-    model="gpt-3.5-turbo",
-    maxTokens: 300,
-     n: 1,
-     stop: 'A:',
-     temperature: 0.5,
-     frequency_penalty: 0,
-     presence_penalty: 0
-    });
-    if (response.data.choices) {
-        res.send(response.data.choices[0].text)
-    } else {
-        res.send("Something went wrong. Try again later!")
-    }
-})
+    
+    const response = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    prompt: prompt,
+    temperature: 0.5,
+    max_tokens: 300,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
+});
 
 app.listen(process.env.PORT || 3000)

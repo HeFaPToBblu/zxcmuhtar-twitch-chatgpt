@@ -38,7 +38,7 @@ app.get('/gpt/:text', async (req, res) => {
       messages: [{ role: "user", content: text}],
     });
     if (response.data.choices) {
-        res.send(response.data.choices[0].message.content)
+        res.send(response.data.choices[0].text)
     } else {
         res.send("Something went wrong. Try again later!")
     }

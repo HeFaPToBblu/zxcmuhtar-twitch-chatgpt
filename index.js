@@ -13,6 +13,13 @@ app.all('/', (req, res) => {
     res.send('Yo!')
 })
 
+let file_context = ""
+fs.readFile("./file_context.txt", 'utf8', function(err, data) {
+  if (err) throw err;
+  console.log(file_context);
+  file_context = data;
+});
+
 app.get('/gpt/:text', async (req, res) => {
     const text = req.params.text
     const { Configuration, OpenAIApi } = require("openai");
@@ -23,24 +30,23 @@ app.get('/gpt/:text', async (req, res) => {
     });
     const openai = new OpenAIApi(configuration);
 
-    const prompt ="\nQ:" + text + "\nA:";
+    const prompt = file_context + "\n\nQ:" + text + "\nA:";
     console.log(prompt);
     
-    const response = await openai.createChatCompletion({
+    const response = await openai.createCompletion({
       model: "text-davinci-003",
-      messages: [{role: "system", content: "You are a chatbot on the twitch platform, so you should follow the twitch rules.You should have short answers in Russian.Be polite and funny to everyone."},
-          { role: "user", content: prompt}],
-            temperature: 0.5,
-            max_tokens: 300,
-            top_p: 1,
-            frequency_penalty: 0,
-            presence_penalty: 0,
+      prompt: prompt,
+      temperature: 0.5,
+      max_tokens: 300,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
     });
     if (response.data.choices) {
-        res.send(response.data.choices[0].message.content)
+        res.send(response.data.choices[0].text)
     } else {
         res.send("Something went wrong. Try again later!")
     }
 })
 
-app.listen(process.env.PORT || 3000) 
+app.listen(process.env.PORT || 3000)

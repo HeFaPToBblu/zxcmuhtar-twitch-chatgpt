@@ -28,7 +28,8 @@ app.get('/gpt/:text', async (req, res) => {
     
     const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
-      messages: [{ role: "assistant", content: text}],
+      messages: [{role: "system", content: "You are a chatbot on the twitch platform, so you should follow the twitch rules.You should have short answers in Russian.Be polite and funny to everyone."},
+          { role: "user", content: text}],
     });
     if (response.data.choices) {
         res.send(response.data.choices[0].message.content)

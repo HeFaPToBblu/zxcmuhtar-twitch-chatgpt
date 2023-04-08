@@ -41,6 +41,7 @@ app.get('/gpt/:text', async (req, res) => {
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
+      apiVersion: "v1",
     });
     if (response.data.choices) {
         res.send(response.data.choices[0].text)

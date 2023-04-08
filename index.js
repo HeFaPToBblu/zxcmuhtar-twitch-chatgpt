@@ -30,6 +30,8 @@ app.get('/gpt/:text', async (req, res) => {
       model: "gpt-3.5-turbo",
       messages: [{role: "system", content: "You are a chatbot on the twitch platform, so you should follow the twitch rules.You should have short answers in Russian.Be polite and funny to everyone."},
           { role: "user", content: text}],
+            temperature = 0.5,    
+            max_tokens = 300,
     });
     if (response.data.choices) {
         res.send(response.data.choices[0].message.content)

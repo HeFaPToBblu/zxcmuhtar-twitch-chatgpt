@@ -27,7 +27,7 @@ app.get('/gpt/:text', async (req, res) => {
     console.log(prompt);
     
     const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+      model: "text-davinci-003",
       messages: [{role: "system", content: "You are a chatbot on the twitch platform, so you should follow the twitch rules.You should have short answers in Russian.Be polite and funny to everyone."},
           { role: "user", content: prompt}],
             temperature: 0.5,

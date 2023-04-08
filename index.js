@@ -21,7 +21,7 @@ fs.readFile("./file_context.txt", 'utf8', function(err, data) {
 
 app.get('/gpt/:text', async (req, res) => {
     const text = req.params.text
-    const { Configuration, OpenAIApi } = require("openai");
+    const openai = require('openai')('OPENAI_API_KEY');
 
     console.log(process.env.OPENAI_API_KEY)
     const configuration = new Configuration({
@@ -32,16 +32,14 @@ app.get('/gpt/:text', async (req, res) => {
     const prompt = file_context + "\n\nQ:" + text + "\nA:";
     console.log(prompt);
 
-    const response = await openai.ChatCompletion.create({
-        model: "gpt-3.5-turbo",
-        messages: [
-            {"role": "system", "content": "You are a chat bot on twitch speaking russian."},
-        ],
-        temperature: 0.5,
-        max_tokens: 300,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
+   const response = await openai.complete({
+    model="gpt-3.5-turbo",
+    maxTokens: 300,
+     n: 1,
+     stop: 'A:',
+     temperature: 0.5,
+     frequency_penalty: 0,
+     presence_penalty: 0
     });
     if (response.data.choices) {
         res.send(response.data.choices[0].text)

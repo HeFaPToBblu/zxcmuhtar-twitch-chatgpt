@@ -27,12 +27,12 @@ app.get('/gpt/:text', async (req, res) => {
     const configuration = new Configuration({
       apiKey: process.env.OPENAI_API_KEY,
     });
-    const openai = new OpenAIApi(configuration);
+    const openaiInstance = new OpenAIApi(configuration);
 
     const prompt = file_context + "\n\nQ:" + text + "\nA:";
     console.log(prompt);
 
-   const response = await openai.complete({
+   const response = await openaiInstance.complete({
     model="gpt-3.5-turbo",
     maxTokens: 300,
      n: 1,

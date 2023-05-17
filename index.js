@@ -14,7 +14,8 @@ res.send('Yo!')
 
 app.get('/gpt/:text', async (req, res) => {
 const text = req.params.text
-let text1 = text.replace(/\?/g, ',')
+let decodedText = decodeURIComponent(text);
+let text1 = decodedText.replace(/\?/g, ',')
 const { Configuration, OpenAIApi } = require("openai");
 
 console.log(process.env.OPENAI_API_KEY)

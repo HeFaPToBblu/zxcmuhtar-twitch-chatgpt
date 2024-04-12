@@ -22,5 +22,8 @@
     "openai": "^3.2.1",
     "promisify": "^0.0.3",
     "request": "^2.88.2"
-  }
+  }, 
+  "dependencies": {
+  "axios": "^0.21.1",
+}
 }

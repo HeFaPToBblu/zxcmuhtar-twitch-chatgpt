@@ -27,7 +27,7 @@ app.get('/gpt/:text', async (req, res) => {
                 { role: "user", content: decodedText }
             ],
             temperature: 0.8,
-            max_tokens: 450,
+            max_tokens: 500,
             top_p: 1,
             frequency_penalty: 0,
             presence_penalty: 0,
